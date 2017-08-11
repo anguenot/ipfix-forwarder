@@ -1,0 +1,4 @@
+package: github.com/anguenot/ipfix-gocollector
+import:
+- package: github.com/spf13/viper
+- package: github.com/Sirupsen/logrus
