@@ -59,12 +59,13 @@ func readUDP(conn *net.UDPConn, exit chan struct{}) {
 // parse IPFIX messages and returns a JSON string representation
 func parseIpfix(s *ipfix.Session, buf []byte, n int) (string) {
 	msgMap := parseIpfixMessage(s, buf, n)
+	var jsonStr string
 	if len(msgMap) > 0 {
-		return mapToJson(msgMap)
+		jsonStr = mapToJSON(msgMap)
 	} else {
 		glog.V(3).Infoln("Empty message: waiting for schema?")
-		return ""
 	}
+	return jsonStr
 }
 
 // export message

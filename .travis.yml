@@ -7,7 +7,9 @@ go:
 install:
   - go get -v github.com/Masterminds/glide 
   - make get-deps
+  - go get -u github.com/golang/lint/golint
 
 script:
   - make test
   - make build
+  - golint .

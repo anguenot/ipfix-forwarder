@@ -7,37 +7,38 @@ import (
 	"strconv"
 )
 
+// VMware constants
 const (
-	VENDOR_VMWARE_NSX = "vendor-vmware-nsx"
-	VENDOR_VMWARE_VDS = "vendor-vmware-vds"
-	LAYER2_SEGMENT_ID = "layer2SegmentId"
-	NSX_SEGMENT_ID    = "nsxSegmentId"
+	VendorVmwareNSX = "vendor-vmware-nsx"
+	VendorVmwareVDS = "vendor-vmware-vds"
+	Layer2SegmentID = "layer2SegmentId"
+	NSXSegmentID    = "nsxSegmentId"
 )
 
 func includeVmwareNsxFields(i *ipfix.Interpreter) {
-	vmware_950 := ipfix.DictionaryEntry{
+	vmware950 := ipfix.DictionaryEntry{
 		Name:         "vmware_950",
 		FieldID:      950,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int32,
 	}
-	i.AddDictionaryEntry(vmware_950)
+	i.AddDictionaryEntry(vmware950)
 
-	vmware_951 := ipfix.DictionaryEntry{
+	vmware951 := ipfix.DictionaryEntry{
 		Name:         "vmUuid",
 		FieldID:      951,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int32,
 	}
-	i.AddDictionaryEntry(vmware_951)
+	i.AddDictionaryEntry(vmware951)
 
-	vmware_952 := ipfix.DictionaryEntry{
+	vmware952 := ipfix.DictionaryEntry{
 		Name:         "vnicIndex",
 		FieldID:      952,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int32,
 	}
-	i.AddDictionaryEntry(vmware_952)
+	i.AddDictionaryEntry(vmware952)
 
 }
 
@@ -52,108 +53,108 @@ func includeVmwareNsxFields(i *ipfix.Interpreter) {
 // the vxlanExportRole defines if the exporter is an ESXi Host or any other
 // network device. This should be 0x01 in most cases.
 func includeVmwareVcenterFields(i *ipfix.Interpreter) {
-	vmware_880 := ipfix.DictionaryEntry{
+	vmware880 := ipfix.DictionaryEntry{
 		Name:         "tenantProtocol",
 		FieldID:      880,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int8,
 	}
-	i.AddDictionaryEntry(vmware_880)
+	i.AddDictionaryEntry(vmware880)
 
-	vmware_881 := ipfix.DictionaryEntry{
+	vmware881 := ipfix.DictionaryEntry{
 		Name:         "tenantSourceIPv4",
 		FieldID:      881,
 		EnterpriseID: 6876,
 		Type:         ipfix.Ipv4Address,
 	}
-	i.AddDictionaryEntry(vmware_881)
+	i.AddDictionaryEntry(vmware881)
 
-	vmware_882 := ipfix.DictionaryEntry{
+	vmware882 := ipfix.DictionaryEntry{
 		Name:         "tenantDestIPv4",
 		FieldID:      882,
 		EnterpriseID: 6876,
 		Type:         ipfix.Ipv4Address,
 	}
-	i.AddDictionaryEntry(vmware_882)
+	i.AddDictionaryEntry(vmware882)
 
-	vmware_883 := ipfix.DictionaryEntry{
+	vmware883 := ipfix.DictionaryEntry{
 		Name:         "tenantSourceIPv6",
 		FieldID:      883,
 		EnterpriseID: 6876,
 		Type:         ipfix.String,
 	}
-	i.AddDictionaryEntry(vmware_883)
+	i.AddDictionaryEntry(vmware883)
 
-	vmware_884 := ipfix.DictionaryEntry{
+	vmware884 := ipfix.DictionaryEntry{
 		Name:         "tenantDestIPv6",
 		FieldID:      884,
 		EnterpriseID: 6876,
 		Type:         ipfix.String,
 	}
-	i.AddDictionaryEntry(vmware_884)
+	i.AddDictionaryEntry(vmware884)
 
-	vmware_885 := ipfix.DictionaryEntry{
+	vmware885 := ipfix.DictionaryEntry{
 		Name:         "vmware_885",
 		FieldID:      885,
 		EnterpriseID: 6876,
 		Type:         ipfix.String,
 	}
-	i.AddDictionaryEntry(vmware_885)
+	i.AddDictionaryEntry(vmware885)
 
-	vmware_886 := ipfix.DictionaryEntry{
+	vmware886 := ipfix.DictionaryEntry{
 		Name:         "tenantSourcePort",
 		FieldID:      886,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int16,
 	}
-	i.AddDictionaryEntry(vmware_886)
+	i.AddDictionaryEntry(vmware886)
 
-	vmware_887 := ipfix.DictionaryEntry{
+	vmware887 := ipfix.DictionaryEntry{
 		Name:         "tenantDestPort",
 		FieldID:      887,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int16,
 	}
-	i.AddDictionaryEntry(vmware_887)
+	i.AddDictionaryEntry(vmware887)
 
-	vmware_888 := ipfix.DictionaryEntry{
+	vmware888 := ipfix.DictionaryEntry{
 		Name:         "egressInterfaceAttr",
 		FieldID:      888,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int16,
 	}
-	i.AddDictionaryEntry(vmware_888)
+	i.AddDictionaryEntry(vmware888)
 
-	vmware_889 := ipfix.DictionaryEntry{
+	vmware889 := ipfix.DictionaryEntry{
 		Name:         "vxlanExportRole",
 		FieldID:      889,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int8,
 	}
-	i.AddDictionaryEntry(vmware_889)
+	i.AddDictionaryEntry(vmware889)
 
-	vmware_890 := ipfix.DictionaryEntry{
+	vmware890 := ipfix.DictionaryEntry{
 		Name:         "ingressInterfaceAttr",
 		FieldID:      890,
 		EnterpriseID: 6876,
 		Type:         ipfix.Int16,
 	}
-	i.AddDictionaryEntry(vmware_890)
+	i.AddDictionaryEntry(vmware890)
 
 }
 
 // return the NSX segment ID given the value of `layer2SegmentId`
 // the last three bytes of this field will give us the segment ID for the flow
-func getNSXSegmentId(layer2SegmentId uint64) uint64 {
+func getNSXSegmentID(layer2SegmentID uint64) uint64 {
 
 	b := make([]byte, 8)
-	binary.LittleEndian.PutUint64(b, layer2SegmentId)
+	binary.LittleEndian.PutUint64(b, layer2SegmentID)
 
 	str := hex.EncodeToString(b)
-	hex_str := "0x" + str[4:6] + str[2:4] + str[0:2]
+	hexStr := "0x" + str[4:6] + str[2:4] + str[0:2]
 
-	segmentId, _ := strconv.ParseInt(hex_str, 0, 64)
+	segmentID, _ := strconv.ParseInt(hexStr, 0, 64)
 
-	return uint64(segmentId)
+	return uint64(segmentID)
 
 }

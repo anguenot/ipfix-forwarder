@@ -30,12 +30,12 @@ func parseOptions() {
 	serverPort := flag.Int("server-port", 2055,
 		"Port we will be listening on.")
 
-	vendorVmwareNsx := flag.Bool(VENDOR_VMWARE_NSX, false,
+	vendorVmwareNsx := flag.Bool(VendorVmwareNSX, false,
 		"Include VMware NSX vendor fields.")
-	vendorVmwareVds := flag.Bool(VENDOR_VMWARE_VDS, false,
+	vendorVmwareVds := flag.Bool(VendorVmwareVDS, false,
 		"Include VMware vSphere Distributed Switch (VDS) vendor fields.")
 
-	exportJsonSyslog := flag.Bool("export-json-to-syslog", false,
+	exportJSONSyslog := flag.Bool("export-json-to-syslog", false,
 		"export flows to syslog server in JSON format")
 
 	exportSyslogAddr := flag.String("export-syslog-host",
@@ -69,17 +69,17 @@ func parseOptions() {
 	if *vendorVmwareNsx {
 		glog.Infoln("VMWare vendor fields for NSX Netflow will be " +
 			"interpreted.")
-		vendors = append(vendors, VENDOR_VMWARE_NSX)
+		vendors = append(vendors, VendorVmwareNSX)
 	}
 	if *vendorVmwareVds {
 		glog.Infoln("VMWare vendor fields for vCenter DVS will be " +
 			"interpreted.")
-		vendors = append(vendors, VENDOR_VMWARE_VDS)
+		vendors = append(vendors, VendorVmwareVDS)
 	}
 
 	// syslog server information for native export flows
 	var exportSyslogInfo ExportSyslogInfo
-	if *exportJsonSyslog {
+	if *exportJSONSyslog {
 		exportSyslogInfo = ExportSyslogInfo{
 			address: *exportSyslogAddr,
 			port:    *exportSyslogPort,

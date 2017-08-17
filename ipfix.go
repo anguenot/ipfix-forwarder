@@ -8,7 +8,7 @@ import (
 )
 
 // golang `map[string]interface{}` to JSON string
-func mapToJson(myMap map[string]interface{}) string {
+func mapToJSON(myMap map[string]interface{}) string {
 	jsonBytes, _ := json.Marshal(myMap)
 	return string(jsonBytes[:])
 }
@@ -23,13 +23,13 @@ func parseIpfixMessage(s *ipfix.Session, buf []byte, n int) (map[string]interfac
 	interpreter := ipfix.NewInterpreter(s)
 	for i := 0; i < len(serverOptions.vendors); i++ {
 		switch serverOptions.vendors[i] {
-		case VENDOR_VMWARE_NSX:
+		case VendorVmwareNSX:
 			glog.V(4).Infoln("Include vendor fields",
-				VENDOR_VMWARE_NSX)
+				VendorVmwareNSX)
 			includeVmwareNsxFields(interpreter)
-		case VENDOR_VMWARE_VDS:
+		case VendorVmwareVDS:
 			glog.V(4).Infoln("Include vendor fields",
-				VENDOR_VMWARE_VDS)
+				VendorVmwareVDS)
 			includeVmwareVcenterFields(interpreter)
 		}
 	}
@@ -57,9 +57,9 @@ func parseIpfixMessage(s *ipfix.Session, buf []byte, n int) (map[string]interfac
 					" field value:", fieldList[i].Value)
 			}
 
-			if fieldList[i].Name == LAYER2_SEGMENT_ID {
-				nsxSegmentId := getNSXSegmentId(fieldList[i].Value.(uint64))
-				aliasFieldList[NSX_SEGMENT_ID] = strconv.Itoa(int(nsxSegmentId))
+			if fieldList[i].Name == Layer2SegmentID {
+				nsxSegmentID := getNSXSegmentID(fieldList[i].Value.(uint64))
+				aliasFieldList[NSXSegmentID] = strconv.Itoa(int(nsxSegmentID))
 			}
 
 		}

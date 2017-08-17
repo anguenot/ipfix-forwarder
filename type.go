@@ -1,6 +1,6 @@
 package main
 
-// server options
+// ServerOptions contains general `ipfix-forwarder` server options
 type ServerOptions struct {
 	address          string
 	port             int
@@ -8,7 +8,7 @@ type ServerOptions struct {
 	exportSyslogInfo ExportSyslogInfo
 }
 
-// syslog information for native flow exports
+// ExportSyslogInfo contains syslog information for native flow exports
 type ExportSyslogInfo struct {
 	address string
 	port    int

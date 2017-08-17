@@ -31,7 +31,7 @@ func TestMapToJson(t *testing.T) {
 		"vmware_889":               "1",
 	}
 
-	jsonStr := mapToJson(myMap)
+	jsonStr := mapToJSON(myMap)
 
 	expected := "{\"destinationIPv4Address\":\"192.168.103.255\"," +
 		"\"destinationTransportPort\":\"137\",\"egressInterface\":\"12620\"," +
