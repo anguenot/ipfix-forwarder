@@ -1,5 +1,8 @@
 # ipfix-forwarder
 
+Inline-style:
+[![alt text](https://travis-ci.org/anguenot/ipfix-forwarder.svg?branch=master "Travis CI build status")](https://travis-ci.org/anguenot/ipfix-forwarder)
+
 `ipfix-forwarder` listens for IPFIX (RFC 5101) streams sent over UDP, parses, 
 pre-processes, includes (VMware) vendor fields, converts to JSON and optionally 
 can forward JSON string representation to a custom syslog destination.
