@@ -1,16 +1,16 @@
 .PHONY: build build-alpine clean test help default
 
-BIN_NAME=ipfix-gocollector
+BIN_NAME=ipfix-forwarder
 
 VERSION := $(shell grep "const Version " version.go | sed -E 's/.*"(.+)"$$/\1/')
 GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_DIRTY=$(shell test -n "`git status --porcelain`" && echo "+CHANGES" || true)
-IMAGE_NAME := "none/ipfix-gocollector"
+IMAGE_NAME := "none/ipfix-forwarder"
 
 default: test
 
 help:
-	@echo 'Management commands for ipfix-gocollector:'
+	@echo 'Management commands for ipfix-forwarder:'
 	@echo
 	@echo 'Usage:'
 	@echo '    make build           Compile the project.'
@@ -25,11 +25,12 @@ build:
 	go build -ldflags "-X main.GitCommit=${GIT_COMMIT}${GIT_DIRTY} -X main.VersionPrerelease=DEV" -o bin/${BIN_NAME}
 
 get-deps:
+	@echo "GOPATH=${GOPATH}"
 	glide install
 
 clean:
 	@test ! -e bin/${BIN_NAME} || rm bin/${BIN_NAME}
 
 test:
-	go test $(glide nv)
+	go test -v $(glide nv)
 

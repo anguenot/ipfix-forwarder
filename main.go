@@ -1,23 +1,29 @@
 package main
 
-import (
-	"flag"
-	"fmt"
-)
+import "fmt"
 
 func main() {
 
-	versionFlag := flag.Bool("version", false, "Version")
-	flag.Parse()
+	parseOptions()
+	server()
+}
 
-	if *versionFlag {
-		fmt.Println("Git Commit:", GitCommit)
-		fmt.Println("Version:", Version)
-		if VersionPrerelease != "" {
-			fmt.Println("Version PreRelease:", VersionPrerelease)
-		}
-		return
-	}
+func displayHeader() {
 
-	fmt.Println("Hello.")
+	fmt.Println()
+	fmt.Println(".................. ............. /' /)")
+	fmt.Println("................./´ /)........./¯ //")
+	fmt.Println("..............,/¯// ......... /...//")
+	fmt.Println("............./...//. ......./¯ //")
+	fmt.Println(".........../´¯/'´ ¯/´¯ /.../ /")
+	fmt.Println("........./'.../... ./... /.../ //")
+	fmt.Println("........('(...´(... ....... ,../'. .')")
+	fmt.Println(".........\\.......... ..... ..\\/..../")
+	fmt.Println("..........''...\\.... ..... . _.•´")
+	fmt.Println("............\\....... ..... ..(")
+	fmt.Println("..............\\..... ..... ..")
+	fmt.Println()
+	fmt.Println("http://www.github.com/anguenot/ipfix-forwarder")
+	fmt.Println()
+
 }

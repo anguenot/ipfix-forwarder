@@ -1,0 +1,16 @@
+hash: c650f9001d04e0eec794b1ac1625f43fc00cbe1954358ed02e2320a11e7aece0
+updated: 2017-08-16T12:55:40.478706969-05:00
+imports:
+- name: github.com/calmh/ipfix
+  version: 7181e6d19dda2c666383425d35a014a9f9fc7709
+- name: github.com/golang/glog
+  version: 23def4e6c14b4da8ac2ed8007337bc5eb5007998
+- name: gopkg.in/gcfg.v1
+  version: 27e4946190b4a327b539185f2b5b1f7c84730728
+  subpackages:
+  - scanner
+  - token
+  - types
+- name: gopkg.in/warnings.v0
+  version: 8a331561fe74dadba6edfc59f3be66c22c3b065d
+testImports: []
