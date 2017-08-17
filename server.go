@@ -19,6 +19,7 @@ func server() {
 	if err != nil {
 		panic(err)
 	}
+	defer conn.Close()
 
 	glog.Infoln("UDP server up and listening on port", string(service))
 
@@ -28,7 +29,6 @@ func server() {
 	}
 	<-exit
 
-	defer conn.Close()
 }
 
 // read UDP message

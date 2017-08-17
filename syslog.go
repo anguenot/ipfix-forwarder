@@ -15,6 +15,7 @@ func sendToSyslog(msg string) {
 
 	w, err := syslog.Dial(strings.ToLower(syslogInfo.proto),
 		syslogService, syslog.LOG_NOTICE, syslogInfo.program)
+	defer w.Close()
 	if err != nil {
 		glog.Errorln("Could not connect to syslog server: export will fail...")
 	} else {
@@ -22,5 +23,4 @@ func sendToSyslog(msg string) {
 		glog.V(1).Info("Sending JSON message to syslog server:", msg)
 		w.Notice(msg)
 	}
-	defer w.Close()
 }
