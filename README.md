@@ -1,7 +1,6 @@
 # ipfix-forwarder
 
 [![alt text](https://travis-ci.org/anguenot/ipfix-forwarder.svg?branch=master "Travis CI build status")](https://travis-ci.org/anguenot/ipfix-forwarder)
-
 [![APACHE2 License](https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 
