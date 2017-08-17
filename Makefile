@@ -34,3 +34,7 @@ clean:
 test:
 	go test -v $(glide nv)
 
+lint:
+	go get -u github.com/golang/lint/golint
+	golint .
+
