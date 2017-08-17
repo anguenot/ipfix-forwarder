@@ -3,7 +3,6 @@ package main
 import (
 	"net"
 	"log"
-	"github.com/calmh/ipfix"
 	"github.com/golang/glog"
 	"strconv"
 	"runtime"
@@ -36,8 +35,6 @@ func readUDP(conn *net.UDPConn, exit chan struct{}) {
 
 	buf := make([]byte, 65507) // maximum UDP payload length
 
-	s := ipfix.NewSession()
-
 	err := error(nil)
 	for err == nil {
 		n, addr, err := conn.ReadFrom(buf)
@@ -46,7 +43,7 @@ func readUDP(conn *net.UDPConn, exit chan struct{}) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		jsonStr := parseIpfix(s, buf, n)
+		jsonStr := parseIpfix(buf, n)
 		if &serverOptions.exportSyslogInfo != nil {
 			go exportSyslog(jsonStr)
 		}
@@ -57,8 +54,8 @@ func readUDP(conn *net.UDPConn, exit chan struct{}) {
 }
 
 // parse IPFIX messages and returns a JSON string representation
-func parseIpfix(s *ipfix.Session, buf []byte, n int) (string) {
-	msgMap := parseIpfixMessage(s, buf, n)
+func parseIpfix(buf []byte, n int) (string) {
+	msgMap := parseIpfixMessage(buf, n)
 	var jsonStr string
 	if len(msgMap) > 0 {
 		jsonStr = mapToJSON(msgMap)

@@ -5,7 +5,23 @@ import (
 	"strconv"
 	"github.com/golang/glog"
 	"github.com/calmh/ipfix"
+	"sync"
 )
+
+var (
+	ipfixSession         *ipfix.Session
+	ipfixInterpreter     *ipfix.Interpreter
+	ipfixSessionInitOnce sync.Once
+)
+
+// returns and ipfix session and interpreter singletons
+func getIpfixSessionAndInterpreter() (*ipfix.Session, *ipfix.Interpreter) {
+	ipfixSessionInitOnce.Do(func() {
+		ipfixSession = ipfix.NewSession()
+		ipfixInterpreter = ipfix.NewInterpreter(ipfixSession)
+	})
+	return ipfixSession, ipfixInterpreter
+}
 
 // golang `map[string]interface{}` to JSON string
 func mapToJSON(myMap map[string]interface{}) string {
@@ -13,14 +29,15 @@ func mapToJSON(myMap map[string]interface{}) string {
 	return string(jsonBytes[:])
 }
 
-func parseIpfixMessage(s *ipfix.Session, buf []byte, n int) (map[string]interface{}) {
+func parseIpfixMessage(buf []byte, n int) (map[string]interface{}) {
+
+	s, interpreter := getIpfixSessionAndInterpreter()
 
 	msg, err := s.ParseBuffer(buf[0:n])
 	if err != nil {
 		glog.Errorln("Error recieved:", err)
 	}
 
-	interpreter := ipfix.NewInterpreter(s)
 	for i := 0; i < len(serverOptions.vendors); i++ {
 		switch serverOptions.vendors[i] {
 		case VendorVmwareNSX:
