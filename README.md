@@ -1,6 +1,5 @@
 # ipfix-forwarder
 
-Inline-style:
 [![alt text](https://travis-ci.org/anguenot/ipfix-forwarder.svg?branch=master "Travis CI build status")](https://travis-ci.org/anguenot/ipfix-forwarder)
 
 `ipfix-forwarder` listens for IPFIX (RFC 5101) streams sent over UDP, parses, 
