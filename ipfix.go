@@ -51,11 +51,10 @@ func parseIpfixMessage(s *ipfix.Session, buf []byte, n int) (map[string]interfac
 		fieldList = interpreter.InterpretInto(rec, fieldList[:cap(fieldList)])
 		for i := 0; i < len(fieldList); i++ {
 
-			glog.V(3).Infoln("field name=", fieldList[i].Name,
-				" field value:", fieldList[i].Value)
-
 			if fieldList[i].Name != "" {
 				aliasFieldList[fieldList[i].Name] = fieldList[i].Value
+				glog.V(3).Infoln("field name=", fieldList[i].Name,
+					" field value:", fieldList[i].Value)
 			}
 
 			if fieldList[i].Name == LAYER2_SEGMENT_ID {
