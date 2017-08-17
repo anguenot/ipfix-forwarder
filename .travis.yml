@@ -1,5 +1,5 @@
 language: go
-
+dist: trusty
 go:
   - 1.8.x
   - master
@@ -7,3 +7,7 @@ go:
 install:
   - go get -v github.com/Masterminds/glide 
   - make get-deps
+
+script:
+  - make test
+  - make build
