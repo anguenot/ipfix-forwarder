@@ -6,6 +6,7 @@ import (
 	"github.com/golang/glog"
 	"strconv"
 	"runtime"
+	"github.com/calmh/ipfix"
 )
 
 // UDP server
@@ -24,14 +25,25 @@ func server() {
 
 	exit := make(chan struct{})
 	for cpu := 0; cpu < runtime.NumCPU(); cpu++ {
-		go readUDP(conn, exit)
+		// use closures with goroutines to ensure we have at most one (1) IPFIX
+		// session and interpreter instances per goroutine
+		ipfixSession := ipfix.NewSession()
+		ipfixContext := IpfixContext{
+			session:     ipfixSession,
+			interpreter: ipfix.NewInterpreter(ipfixSession),
+		}
+		go func() {
+			readUDP(conn, &ipfixContext, exit)
+		}()
 	}
 	<-exit
 
 }
 
 // read UDP message
-func readUDP(conn *net.UDPConn, exit chan struct{}) {
+func readUDP(conn *net.UDPConn, ipfixContext *IpfixContext,
+
+	exit chan struct{}) {
 
 	buf := make([]byte, 65507) // maximum UDP payload length
 
@@ -43,19 +55,20 @@ func readUDP(conn *net.UDPConn, exit chan struct{}) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		jsonStr := parseIpfix(buf, n)
+		jsonStr := parseIpfix(buf, n, ipfixContext)
 		if &serverOptions.exportSyslogInfo != nil {
 			go exportSyslog(jsonStr)
 		}
 	}
 
 	glog.Errorln("A listener died - ", err)
+
 	exit <- struct{}{}
 }
 
 // parse IPFIX messages and returns a JSON string representation
-func parseIpfix(buf []byte, n int) (string) {
-	msgMap := parseIpfixMessage(buf, n)
+func parseIpfix(buf []byte, n int, ipfixContext *IpfixContext) (string) {
+	msgMap := parseIpfixMessage(buf, n, ipfixContext)
 	var jsonStr string
 	if len(msgMap) > 0 {
 		jsonStr = mapToJSON(msgMap)
