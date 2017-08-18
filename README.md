@@ -5,10 +5,11 @@
 
 
 `ipfix-forwarder` listens for IPFIX (RFC 5101) streams sent over UDP, parses, 
-pre-processes, includes (VMware) vendor fields, converts to JSON and optionally 
-can forward JSON string representation to a custom syslog destination.
+pre-processes, includes extra (VMware) vendor fields, converts to JSON and 
+optionally can forward JSON string representation to a custom syslog destination.
 
-It knows how to interpret and include the following vendor IPFIX fields:
+In addition to IPFX standard fields, it also knows how to interpret and include 
+the following vendor IPFIX fields:
 
 1. VMware NSX
 2. VMware vSphere Distributed Switch (VDS)
@@ -92,7 +93,7 @@ usage: ipfix-forwarder [server-flags] [vendor(s)] [syslog-export-info] [logging-
 
 ## Download
 
-You can find `linux/amd64` binaries XXX
+You can latest release of `linux/amd64` binaries [here](https://github.com/anguenot/ipfix-forwarder/releases/latest)
 
 ## Build it
 
