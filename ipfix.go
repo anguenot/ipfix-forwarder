@@ -7,6 +7,33 @@ import (
 	"github.com/calmh/ipfix"
 )
 
+// initialize an IPFIX context and interpreter instances
+func initIpfixContext() (*IpfixContext) {
+
+	ipfixSession := ipfix.NewSession()
+	ipfixInterpreter := ipfix.NewInterpreter(ipfixSession)
+
+	for i := 0; i < len(serverOptions.vendors); i++ {
+		switch serverOptions.vendors[i] {
+		case VendorVmwareNSX:
+			glog.V(4).Infoln("Include vendor fields",
+				VendorVmwareNSX)
+			includeVmwareNsxFields(ipfixInterpreter)
+		case VendorVmwareVDS:
+			glog.V(4).Infoln("Include vendor fields",
+				VendorVmwareVDS)
+			includeVmwareVcenterFields(ipfixInterpreter)
+		}
+	}
+
+	ipfixContext := IpfixContext{
+		session:     ipfixSession,
+		interpreter: ipfixInterpreter,
+	}
+
+	return &ipfixContext
+}
+
 // golang `map[string]interface{}` to JSON string
 func mapToJSON(myMap map[string]interface{}) string {
 	jsonBytes, _ := json.Marshal(myMap)
@@ -19,19 +46,6 @@ func parseIpfixMessage(buf []byte, n int,
 	msg, err := ipfixContext.session.ParseBuffer(buf[0:n])
 	if err != nil {
 		glog.Errorln("Error recieved:", err)
-	}
-
-	for i := 0; i < len(serverOptions.vendors); i++ {
-		switch serverOptions.vendors[i] {
-		case VendorVmwareNSX:
-			glog.V(4).Infoln("Include vendor fields",
-				VendorVmwareNSX)
-			includeVmwareNsxFields(ipfixContext.interpreter)
-		case VendorVmwareVDS:
-			glog.V(4).Infoln("Include vendor fields",
-				VendorVmwareVDS)
-			includeVmwareVcenterFields(ipfixContext.interpreter)
-		}
 	}
 
 	if len(msg.DataRecords) > 0 {

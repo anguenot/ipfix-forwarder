@@ -6,7 +6,6 @@ import (
 	"github.com/golang/glog"
 	"strconv"
 	"runtime"
-	"github.com/calmh/ipfix"
 )
 
 // UDP server
@@ -25,15 +24,11 @@ func server() {
 
 	exit := make(chan struct{})
 	for cpu := 0; cpu < runtime.NumCPU(); cpu++ {
-		// use closures with goroutines to ensure we have at most one (1) IPFIX
+		// use closures with goroutines to ensure we have one (1) IPFIX
 		// session and interpreter instances per goroutine
-		ipfixSession := ipfix.NewSession()
-		ipfixContext := IpfixContext{
-			session:     ipfixSession,
-			interpreter: ipfix.NewInterpreter(ipfixSession),
-		}
+		ipfixContext := initIpfixContext()
 		go func() {
-			readUDP(conn, &ipfixContext, exit)
+			readUDP(conn, ipfixContext, exit)
 		}()
 	}
 	<-exit
