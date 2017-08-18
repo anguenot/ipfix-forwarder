@@ -48,12 +48,16 @@ func readUDP(conn *net.UDPConn, ipfixContext *IpfixContext,
 			// error will be logged when exiting
 			continue
 		}
+
 		glog.V(3).Infoln("Incoming message from UDP client @ ", addr)
 		glog.V(3).Infoln("Number of bytes: ", n)
+
+		// parse, pre-process and generate a JSON representation.
 		jsonStr := parseIpfix(buf, n, ipfixContext)
-		if &serverOptions.exportSyslogInfo != nil {
-			go exportSyslog(jsonStr)
-		}
+
+		// exports
+		go exportSyslog(jsonStr)
+
 	}
 
 	glog.Errorln("A listener died - ", err)
@@ -75,6 +79,9 @@ func parseIpfix(buf []byte, n int, ipfixContext *IpfixContext) (string) {
 
 // export message
 func exportSyslog(jsonStr string) {
+	if &serverOptions.exportSyslogInfo == nil {
+		return
+	}
 	if len(jsonStr) > 0 {
 		glog.V(2).Infoln("MSG JSON:", jsonStr)
 		sendToSyslog(jsonStr)
