@@ -40,14 +40,14 @@ func parseOptions() {
 
 	exportSyslogAddr := flag.String("export-syslog-host",
 		"127.0.0.1",
-		"syslog server address for native flow export.")
+		"syslog server address for JSON exports.")
 	exportSyslogPort := flag.Int("export-syslog-port", 514,
-		"syslog server port for native flows export.")
+		"syslog server port forJSON exports.")
 	exportSyslogProto := flag.String("export-syslog-proto", "UDP",
-		"syslog server proto for native flows export.")
+		"syslog server proto for JSON exports.")
 	exportSyslogProgram := flag.String("export-syslog-program",
 		"ipfix-forwarder",
-		"syslog message program for native flows export.")
+		"syslog message program for JSON exports.")
 
 	flag.Usage = usage
 	flag.Parse()
@@ -77,7 +77,7 @@ func parseOptions() {
 		vendors = append(vendors, VendorVmwareVDS)
 	}
 
-	// syslog server information for native export flows
+	// syslog server information for JSON exports.
 	var exportSyslogInfo ExportSyslogInfo
 	if *exportJSONSyslog {
 		exportSyslogInfo = ExportSyslogInfo{

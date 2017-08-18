@@ -13,6 +13,18 @@ func initIpfixContext() (*IpfixContext) {
 	ipfixSession := ipfix.NewSession()
 	ipfixInterpreter := ipfix.NewInterpreter(ipfixSession)
 
+	initIpfixVendors(ipfixInterpreter)
+
+	ipfixContext := IpfixContext{
+		session:     ipfixSession,
+		interpreter: ipfixInterpreter,
+	}
+
+	return &ipfixContext
+}
+
+// extends IPFIX interpreter with vendor fields.
+func initIpfixVendors(ipfixInterpreter *ipfix.Interpreter) {
 	for i := 0; i < len(serverOptions.vendors); i++ {
 		switch serverOptions.vendors[i] {
 		case VendorVmwareNSX:
@@ -25,13 +37,6 @@ func initIpfixContext() (*IpfixContext) {
 			includeVmwareVcenterFields(ipfixInterpreter)
 		}
 	}
-
-	ipfixContext := IpfixContext{
-		session:     ipfixSession,
-		interpreter: ipfixInterpreter,
-	}
-
-	return &ipfixContext
 }
 
 // golang `map[string]interface{}` to JSON string

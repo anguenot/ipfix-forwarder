@@ -2,7 +2,6 @@ package main
 
 import (
 	"net"
-	"log"
 	"github.com/golang/glog"
 	"strconv"
 	"runtime"
@@ -12,8 +11,8 @@ import (
 func server() {
 
 	service := serverOptions.address + ":" + strconv.Itoa(serverOptions.port)
-
 	udpAddr, _ := net.ResolveUDPAddr("udp", service)
+
 	conn, err := net.ListenUDP("udp", udpAddr)
 	if err != nil {
 		panic(err)
@@ -45,11 +44,12 @@ func readUDP(conn *net.UDPConn, ipfixContext *IpfixContext,
 	err := error(nil)
 	for err == nil {
 		n, addr, err := conn.ReadFrom(buf)
+		if err != nil {
+			// error will be logged when exiting
+			continue
+		}
 		glog.V(3).Infoln("Incoming message from UDP client @ ", addr)
 		glog.V(3).Infoln("Number of bytes: ", n)
-		if err != nil {
-			log.Fatal(err)
-		}
 		jsonStr := parseIpfix(buf, n, ipfixContext)
 		if &serverOptions.exportSyslogInfo != nil {
 			go exportSyslog(jsonStr)

@@ -58,13 +58,13 @@ usage: ipfix-forwarder [server-flags] [vendor(s)] [syslog-export-info] [logging-
   -export-json-to-syslog
         export flows to syslog server in JSON format
   -export-syslog-host string
-        syslog server address for native flow export. (default "127.0.0.1")
+        syslog server address for JSON exports. (default "127.0.0.1")
   -export-syslog-port int
-        syslog server port for native flows export. (default 514)
+        syslog server port forJSON exports. (default 514)
   -export-syslog-program string
-        syslog message program for native flows export. (default "ipfix-forwarder")
+        syslog message program for JSON exports. (default "ipfix-forwarder")
   -export-syslog-proto string
-        syslog server proto for native flows export. (default "UDP")
+        syslog server proto for JSON exports. (default "UDP")
   -log_backtrace_at value
         when logging hits line file:N, emit a stack trace
   -log_dir string
@@ -87,6 +87,7 @@ usage: ipfix-forwarder [server-flags] [vendor(s)] [syslog-export-info] [logging-
         Version
   -vmodule value
         comma-separated list of pattern=N settings for file-filtered logging
+
 ```
 
 ## Download
