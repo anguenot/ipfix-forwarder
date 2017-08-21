@@ -93,7 +93,7 @@ usage: ipfix-forwarder [server-flags] [vendor(s)] [syslog-export-info] [logging-
 
 ## Download
 
-You can latest release of `linux/amd64` binaries [here](https://github.com/anguenot/ipfix-forwarder/releases/latest)
+You can find latest binary releases for `linux/amd64` [here](https://github.com/anguenot/ipfix-forwarder/releases/latest)
 
 ## Build it
 
