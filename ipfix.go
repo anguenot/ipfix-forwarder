@@ -1,8 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"strconv"
+	"encoding/json"
+
 	"github.com/golang/glog"
 	"github.com/calmh/ipfix"
 )
@@ -88,4 +89,16 @@ func parseIpfixMessage(buf []byte, n int,
 	glog.V(3).Infoln("MSG FIELDS MAP:", aliasFieldList)
 	return aliasFieldList
 
+}
+
+// parse IPFIX messages and returns a JSON string representation
+func parseIpfix(buf []byte, n int, ipfixContext *IpfixContext) (string) {
+	msgMap := parseIpfixMessage(buf, n, ipfixContext)
+	var jsonStr string
+	if len(msgMap) > 0 {
+		jsonStr = mapToJSON(msgMap)
+	} else {
+		glog.V(3).Infoln("Empty message: waiting for schema?")
+	}
+	return jsonStr
 }

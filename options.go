@@ -5,6 +5,7 @@ import (
 	"flag"
 	"os"
 	"strings"
+
 	"github.com/golang/glog"
 )
 
@@ -86,9 +87,9 @@ func parseOptions() {
 			proto:   strings.ToLower(*exportSyslogProto),
 			program: *exportSyslogProgram,
 		}
-		glog.Infoln("Export to syslog is ON. Destination",
+		glog.Infoln("Export to syslog is ON. destination=",
 			exportSyslogInfo.proto, "://", exportSyslogInfo.address, ":",
-			exportSyslogInfo.port, "program=>", exportSyslogInfo.program)
+			exportSyslogInfo.port, "program:", exportSyslogInfo.program)
 	} else {
 		glog.Infoln("Export to syslog is OFF.")
 	}

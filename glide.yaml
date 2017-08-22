@@ -2,3 +2,5 @@ package: github.com/anguenot/ipfix-forwarder
 import:
 - package: github.com/calmh/ipfix
 - package: github.com/golang/glog
+testImport:
+- package: github.com/stretchr/testify/assert
