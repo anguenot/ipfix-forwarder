@@ -3,7 +3,6 @@ package main
 import (
 	"net"
 	"strconv"
-	"runtime"
 
 	"github.com/golang/glog"
 )
@@ -24,14 +23,17 @@ func server() {
 	glog.Infoln("It can take up to 1 minute for messages to start " +
 		"coming in: waiting for IPFIX template sync.")
 
+	glog.Infof("Will be using %d CPU(s).", serverOptions.numCPU)
+
 	exit := make(chan struct{})
-	for cpu := 0; cpu < runtime.NumCPU(); cpu++ {
+	for cpu := 0; cpu < serverOptions.numCPU; cpu++ {
 		// use closures with goroutines to ensure we have one (1) IPFIX
 		// session and interpreter instances per goroutine
 		ipfixContext := initIpfixContext()
-		go func() {
+		go func(cpu int) {
+			glog.Infof("Starting listener #%d ", cpu)
 			readUDP(conn, ipfixContext, exit)
-		}()
+		}(cpu)
 	}
 	<-exit
 
