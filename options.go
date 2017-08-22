@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/golang/glog"
+	"runtime"
 )
 
 // server options
@@ -30,6 +31,9 @@ func parseOptions() {
 		"IP the server will be listening to.")
 	serverPort := flag.Int("server-port", 2055,
 		"Port we will be listening on.")
+
+	numCPU := flag.Int("num-cpu", runtime.NumCPU(),
+		"Number of CPUs to leverage.")
 
 	vendorVmwareNsx := flag.Bool(VendorVmwareNSX, false,
 		"Include VMware NSX vendor fields.")
@@ -98,6 +102,7 @@ func parseOptions() {
 	serverOptions = ServerOptions{
 		address:          *serverAddr,
 		port:             *serverPort,
+		numCPU:           *numCPU,
 		exportSyslogInfo: exportSyslogInfo,
 		vendors:          vendors,
 	}
