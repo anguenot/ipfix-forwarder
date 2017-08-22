@@ -1,5 +1,5 @@
-hash: c650f9001d04e0eec794b1ac1625f43fc00cbe1954358ed02e2320a11e7aece0
-updated: 2017-08-16T12:55:40.478706969-05:00
+hash: 1f1de020b82843bb51fbb1c39ba3bee1588fa25201fcb35f25f3084e0fe5187a
+updated: 2017-08-22T14:57:31.136103564-05:00
 imports:
 - name: github.com/calmh/ipfix
   version: 7181e6d19dda2c666383425d35a014a9f9fc7709
@@ -13,4 +13,16 @@ imports:
   - types
 - name: gopkg.in/warnings.v0
   version: 8a331561fe74dadba6edfc59f3be66c22c3b065d
-testImports: []
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
+- name: github.com/stretchr/testify
+  version: 890a5c3458b43e6104ff5da8dfa139d013d77544
+  subpackages:
+  - assert

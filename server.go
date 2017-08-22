@@ -2,9 +2,10 @@ package main
 
 import (
 	"net"
-	"github.com/golang/glog"
 	"strconv"
 	"runtime"
+
+	"github.com/golang/glog"
 )
 
 // UDP server
@@ -20,6 +21,8 @@ func server() {
 	defer conn.Close()
 
 	glog.Infoln("UDP server up and listening on port", string(service))
+	glog.Infoln("It can take up to 1 minute for messages to start " +
+		"coming in: waiting for IPFIX template sync.")
 
 	exit := make(chan struct{})
 	for cpu := 0; cpu < runtime.NumCPU(); cpu++ {
@@ -63,29 +66,5 @@ func readUDP(conn *net.UDPConn, ipfixContext *IpfixContext,
 	glog.Errorln("A listener died - ", err)
 
 	exit <- struct{}{}
-}
 
-// parse IPFIX messages and returns a JSON string representation
-func parseIpfix(buf []byte, n int, ipfixContext *IpfixContext) (string) {
-	msgMap := parseIpfixMessage(buf, n, ipfixContext)
-	var jsonStr string
-	if len(msgMap) > 0 {
-		jsonStr = mapToJSON(msgMap)
-	} else {
-		glog.V(3).Infoln("Empty message: waiting for schema?")
-	}
-	return jsonStr
-}
-
-// export message
-func exportSyslog(jsonStr string) {
-	if &serverOptions.exportSyslogInfo == nil {
-		return
-	}
-	if len(jsonStr) > 0 {
-		glog.V(2).Infoln("MSG JSON:", jsonStr)
-		sendToSyslog(jsonStr)
-	} else {
-		glog.V(4).Infoln("Empty JSON message: not forwarding.")
-	}
 }
