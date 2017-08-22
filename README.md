@@ -73,7 +73,7 @@ usage: ipfix-forwarder [server-flags] [vendor(s)] [syslog-export-info] [logging-
   -logtostderr
         log to standard error instead of files
   -num-cpu int
-        Number of CPUs to leverage. (default 3)
+        Number of CPUs to leverage. (default `runtime.NumCPU()`)
   -server-address string
         IP the server will be listening to. (default "0.0.0.0")
   -server-port int
