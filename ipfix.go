@@ -35,7 +35,7 @@ func initIpfixVendors(ipfixInterpreter *ipfix.Interpreter) {
 		case VendorVmwareVDS:
 			glog.V(4).Infoln("Include vendor fields",
 				VendorVmwareVDS)
-			includeVmwareVcenterFields(ipfixInterpreter)
+			includeVmwareVDSFields(ipfixInterpreter)
 		}
 	}
 }

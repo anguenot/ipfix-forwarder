@@ -15,6 +15,8 @@ const (
 	NSXSegmentID    = "nsxSegmentId"
 )
 
+// add VMWare NSX vendor fields to the dictionary so that it will be resolved by
+// the interpreter
 func includeVmwareNsxFields(i *ipfix.Interpreter) {
 	vmware950 := ipfix.DictionaryEntry{
 		Name:         "vmware_950",
@@ -42,6 +44,9 @@ func includeVmwareNsxFields(i *ipfix.Interpreter) {
 
 }
 
+// add VMWare Virtual Distributed Switch (VDS) vendor fields to the dictionary
+// so that it will be resolved by the interpreter
+//
 // tenant* identifies the tenant or the inner packet attributes.
 // the ingress and egress Interface attributes can take the following values
 // based on the type of port:
@@ -52,7 +57,7 @@ func includeVmwareNsxFields(i *ipfix.Interpreter) {
 //
 // the vxlanExportRole defines if the exporter is an ESXi Host or any other
 // network device. This should be 0x01 in most cases.
-func includeVmwareVcenterFields(i *ipfix.Interpreter) {
+func includeVmwareVDSFields(i *ipfix.Interpreter) {
 	vmware880 := ipfix.DictionaryEntry{
 		Name:         "tenantProtocol",
 		FieldID:      880,
