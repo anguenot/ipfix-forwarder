@@ -61,7 +61,9 @@ func readUDP(conn *net.UDPConn, ipfixContext *IpfixContext,
 		jsonStr := parseIpfix(buf, n, ipfixContext)
 
 		// exports
-		go exportSyslog(jsonStr)
+		if len(jsonStr) > 0 && isSyslogExportEnabled() {
+			go exportSyslog(jsonStr)
+		}
 
 	}
 

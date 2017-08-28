@@ -11,46 +11,41 @@ import (
 )
 
 var (
-	syslogWriter *syslog.Writer
-	once         sync.Once
+	syslogWriter     *syslog.Writer
+	syslogWriterOnce sync.Once
+
+	syslogErrMsg = "could not send message: syslog connection is nil"
 )
 
 // initialize the syslog connection
-func getSyslogWriter() *syslog.Writer {
-	once.Do(func() {
+func getSyslogWriter() (*syslog.Writer, error) {
+	var err error
+	syslogWriterOnce.Do(func() {
 		info := serverOptions.exportSyslogInfo
 		connStr := info.address + ":" + strconv.Itoa(info.port)
-		var err error
 		syslogWriter, err = syslog.Dial(strings.ToLower(info.proto),
 			connStr, syslog.LOG_NOTICE, info.program)
-		if err != nil {
-			// do not panic here.
-			glog.Errorln(err)
+		if err == nil {
+			defer syslogWriter.Close()
 		}
-		defer syslogWriter.Close()
 	})
-	return syslogWriter
+	return syslogWriter, err
 }
 
-// sends `msg` string to a syslog server
-func sendToSyslog(msg string) (error) {
-	syslogWriter = getSyslogWriter()
-	if syslogWriter != nil {
-		glog.V(1).Info("Sending JSON message to syslog server:", msg)
-		return syslogWriter.Notice(msg)
-	}
-	return errors.New("could not send message: syslog connection is nil")
+// is syslog export enabled?
+func isSyslogExportEnabled() (bool) {
+	return serverOptions.exportSyslogInfo != ExportSyslogInfo{}
 }
 
 // export message
-func exportSyslog(jsonStr string) {
-	if &serverOptions.exportSyslogInfo == nil {
-		return
+func exportSyslog(jsonStr string) (error) {
+	w, err := getSyslogWriter()
+	if err != nil {
+		return err
 	}
-	if len(jsonStr) > 0 {
-		glog.V(2).Infoln("MSG JSON:", jsonStr)
-		sendToSyslog(jsonStr)
-	} else {
-		glog.V(4).Infoln("Empty JSON message: not forwarding.")
+	if w != nil {
+		glog.V(1).Info("Sending JSON message to syslog server:", jsonStr)
+		return w.Notice(jsonStr)
 	}
+	return errors.New(syslogErrMsg)
 }

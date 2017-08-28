@@ -34,6 +34,14 @@ clean:
 test:
 	go test -v $(glide nv)
 
+coverage:
+	go test -covermode=count -coverprofile=coverage.out
+	go tool cover -func=coverage.out
+
+coverage-html:
+	go test -covermode=count -coverprofile=coverage.out
+	go tool cover -html=coverage.out
+
 lint:
 	go get -u github.com/golang/lint/golint
 	golint .
