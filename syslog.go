@@ -21,7 +21,7 @@ var (
 func getSyslogWriter() (*syslog.Writer, error) {
 	var err error
 	syslogWriterOnce.Do(func() {
-		info := serverOptions.exportSyslogInfo
+		info := globalServerOptions.exportSyslogInfo
 		connStr := info.address + ":" + strconv.Itoa(info.port)
 		syslogWriter, err = syslog.Dial(strings.ToLower(info.proto),
 			connStr, syslog.LOG_NOTICE, info.program)
@@ -34,7 +34,7 @@ func getSyslogWriter() (*syslog.Writer, error) {
 
 // is syslog export enabled?
 func isSyslogExportEnabled() (bool) {
-	return serverOptions.exportSyslogInfo != ExportSyslogInfo{}
+	return globalServerOptions.exportSyslogInfo != ExportSyslogInfo{}
 }
 
 // export message

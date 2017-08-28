@@ -29,7 +29,7 @@ func TestSyslogWriter(t *testing.T) {
 	// re-initialize
 	syslogWriterOnce = sync.Once{}
 	// force nil
-	serverOptions.exportSyslogInfo = ExportSyslogInfo{
+	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{
 		address: "1.2.3.4",
 		port:    22,
 		proto:   "UDP",
@@ -60,7 +60,7 @@ func TestExportSyslogEmptyError(t *testing.T) {
 }
 
 func TestExportSyslogWriterError(t *testing.T) {
-	serverOptions.exportSyslogInfo = ExportSyslogInfo{
+	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{
 		address: "1.2.3.4",
 		port:    2055,
 		proto:   "UDP",
@@ -69,20 +69,20 @@ func TestExportSyslogWriterError(t *testing.T) {
 	err := exportSyslog("whatever")
 	assert.Error(t, err, syslogErrMsg)
 
-	serverOptions.exportSyslogInfo = ExportSyslogInfo{}
+	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{}
 }
 
 func TestSyslogExportDisabled(t *testing.T) {
 
 	assert.False(t, isSyslogExportEnabled())
 
-	serverOptions = ServerOptions{}
+	globalServerOptions = ServerOptions{}
 	assert.False(t, isSyslogExportEnabled())
 
-	serverOptions.exportSyslogInfo = ExportSyslogInfo{}
+	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{}
 	assert.False(t, isSyslogExportEnabled())
 
-	serverOptions.exportSyslogInfo = ExportSyslogInfo{
+	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{
 		address: "",
 		port:    0,
 		proto:   "",
@@ -91,7 +91,7 @@ func TestSyslogExportDisabled(t *testing.T) {
 	// still null cause empty struct
 	assert.False(t, isSyslogExportEnabled())
 
-	serverOptions.exportSyslogInfo = ExportSyslogInfo{
+	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{
 		address: "",
 		port:    2055,
 		proto:   "",
@@ -101,7 +101,7 @@ func TestSyslogExportDisabled(t *testing.T) {
 	assert.True(t, isSyslogExportEnabled())
 
 	// put it back to disabled for other tests
-	serverOptions.exportSyslogInfo = ExportSyslogInfo{}
+	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{}
 
 }
 
@@ -115,7 +115,7 @@ func TestExportSyslog(t *testing.T) {
 	syslogWriterOnce = sync.Once{}
 
 	// force nil
-	serverOptions.exportSyslogInfo = ExportSyslogInfo{
+	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{
 		address: "localhost",
 		port:    2055,
 		proto:   "UDP",

@@ -66,17 +66,17 @@ func TestInitIpfixContext(t *testing.T) {
 }
 
 func TestInitIpfixVendors(t *testing.T) {
-	assert.Empty(t, serverOptions.vendors)
+	assert.Empty(t, globalServerOptions.vendors)
 	c := initIpfixContext()
 	initIpfixVendors(c.interpreter)
 
-	serverOptions.vendors = []string{VendorVmwareNSX}
+	globalServerOptions.vendors = []string{VendorVmwareNSX}
 	initIpfixVendors(c.interpreter)
 
-	serverOptions.vendors = []string{VendorVmwareVDS}
+	globalServerOptions.vendors = []string{VendorVmwareVDS}
 	initIpfixVendors(c.interpreter)
 
-	serverOptions.vendors = []string{VendorVmwareVDS, VendorVmwareNSX}
+	globalServerOptions.vendors = []string{VendorVmwareVDS, VendorVmwareNSX}
 	initIpfixVendors(c.interpreter)
 
 }

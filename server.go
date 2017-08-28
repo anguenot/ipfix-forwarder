@@ -10,7 +10,7 @@ import (
 // UDP server
 func server() {
 
-	service := serverOptions.address + ":" + strconv.Itoa(serverOptions.port)
+	service := globalServerOptions.address + ":" + strconv.Itoa(globalServerOptions.port)
 	udpAddr, _ := net.ResolveUDPAddr("udp", service)
 
 	conn, err := net.ListenUDP("udp", udpAddr)
@@ -23,10 +23,10 @@ func server() {
 	glog.Infoln("It can take up to 1 minute for messages to start " +
 		"coming in: waiting for IPFIX template sync.")
 
-	glog.Infof("Will be using %d CPU(s).", serverOptions.numCPU)
+	glog.Infof("Will be using %d CPU(s).", globalServerOptions.numCPU)
 
 	exit := make(chan struct{})
-	for cpu := 0; cpu < serverOptions.numCPU; cpu++ {
+	for cpu := 0; cpu < globalServerOptions.numCPU; cpu++ {
 		// use closures with goroutines to ensure we have one (1) IPFIX
 		// session and interpreter instances per goroutine
 		ipfixContext := initIpfixContext()

@@ -26,8 +26,8 @@ func initIpfixContext() (*IpfixContext) {
 
 // extends IPFIX interpreter with vendor fields.
 func initIpfixVendors(ipfixInterpreter *ipfix.Interpreter) {
-	for i := 0; i < len(serverOptions.vendors); i++ {
-		switch serverOptions.vendors[i] {
+	for i := 0; i < len(globalServerOptions.vendors); i++ {
+		switch globalServerOptions.vendors[i] {
 		case VendorVmwareNSX:
 			glog.V(4).Infoln("Include vendor fields",
 				VendorVmwareNSX)

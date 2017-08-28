@@ -11,7 +11,7 @@ import (
 )
 
 // server options
-var serverOptions ServerOptions
+var globalServerOptions ServerOptions
 
 func usage() {
 	fmt.Println()
@@ -95,7 +95,7 @@ func parseOptions() {
 	}
 
 	// global server options
-	serverOptions = ServerOptions{
+	globalServerOptions = ServerOptions{
 		address:          *serverAddr,
 		port:             *serverPort,
 		numCPU:           *numCPU,
