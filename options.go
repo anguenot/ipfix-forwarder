@@ -57,17 +57,13 @@ func parseOptions() {
 	flag.Usage = usage
 	flag.Parse()
 
-	displayHeader()
-
 	// display this program version, if requested, and exit.
 	if *versionFlag {
-		fmt.Println("Git Commit:", GitCommit)
-		fmt.Println("Version:", Version)
-		if VersionPrerelease != "" {
-			fmt.Println("Version PreRelease:", VersionPrerelease)
-		}
+		displayVersion()
 		os.Exit(2)
 	}
+
+	displayHeader()
 
 	// vendors related options
 	var vendors []string
