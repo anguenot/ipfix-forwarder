@@ -39,13 +39,26 @@ func isSyslogExportEnabled() (bool) {
 
 // export message
 func exportSyslog(jsonStr string) (error) {
-	w, err := getSyslogWriter()
-	if err != nil {
-		return err
-	}
-	if w != nil {
-		glog.V(1).Info("Sending JSON message to syslog server:", jsonStr)
+	var errCount uint
+	for {
+		w, err := getSyslogWriter()
+		if err != nil {
+			if errCount >= maxRetries {
+				return err
+			}
+			incErrorCountAndSleep(err, &errCount)
+			continue
+		}
+		if w == nil {
+			if errCount >= maxRetries {
+				return errors.New(syslogErrMsg)
+			}
+
+			incErrorCountAndSleep(errors.New(syslogErrMsg), &errCount)
+			continue
+		}
+		glog.V(1).Info(
+			"Sending JSON message to syslog server:", jsonStr)
 		return w.Notice(jsonStr)
 	}
-	return errors.New(syslogErrMsg)
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"net"
 	"strconv"
-
 	"github.com/golang/glog"
 )
 
@@ -47,10 +46,13 @@ func readUDP(conn *net.UDPConn, ipfixContext *IpfixContext,
 	buf := make([]byte, 65507) // maximum UDP payload length
 
 	err := error(nil)
-	for err == nil {
+	var errCount uint // error count for retry mechanism
+	for err == nil && errCount < maxRetries {
+
 		n, addr, err := conn.ReadFrom(buf)
 		if err != nil {
-			// error will be logged when exiting
+			incErrorCountAndSleep(err, &errCount)
+			// error will be logged when exiting after 3 errors.
 			continue
 		}
 
@@ -67,7 +69,7 @@ func readUDP(conn *net.UDPConn, ipfixContext *IpfixContext,
 
 	}
 
-	glog.Errorln("A listener died - ", err)
+	glog.Errorln("Listener failed 3 times. Killing it!", err)
 
 	exit <- struct{}{}
 

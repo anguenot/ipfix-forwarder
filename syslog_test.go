@@ -5,9 +5,13 @@ import (
 	"sync"
 
 	"github.com/stretchr/testify/assert"
+	"time"
 )
 
 func TestSyslogWriter(t *testing.T) {
+
+	// decrease exponential back-off base retry delay.
+	baseRetryDelay = 1 * time.Microsecond
 
 	assert.Nil(t, syslogWriter)
 
@@ -46,6 +50,10 @@ func TestSyslogWriter(t *testing.T) {
 }
 
 func TestExportSyslogError(t *testing.T) {
+
+	// decrease exponential back-off base retry delay.
+	baseRetryDelay = 1 * time.Microsecond
+
 	// force nil
 	syslogWriter = nil
 	err := exportSyslog("testing")
@@ -53,6 +61,10 @@ func TestExportSyslogError(t *testing.T) {
 }
 
 func TestExportSyslogEmptyError(t *testing.T) {
+
+	// decrease exponential back-off base retry delay.
+	baseRetryDelay = 1 * time.Microsecond
+
 	// force nil
 	syslogWriter = nil
 	err := exportSyslog("")
@@ -60,6 +72,10 @@ func TestExportSyslogEmptyError(t *testing.T) {
 }
 
 func TestExportSyslogWriterError(t *testing.T) {
+
+	// decrease exponential back-off base retry delay.
+	baseRetryDelay = 1 * time.Microsecond
+
 	globalServerOptions.exportSyslogInfo = ExportSyslogInfo{
 		address: "1.2.3.4",
 		port:    2055,
@@ -73,6 +89,9 @@ func TestExportSyslogWriterError(t *testing.T) {
 }
 
 func TestSyslogExportDisabled(t *testing.T) {
+
+	// decrease exponential back-off base retry delay.
+	baseRetryDelay = 1 * time.Microsecond
 
 	assert.False(t, isSyslogExportEnabled())
 
@@ -110,6 +129,9 @@ func TestSyslogExportEnabled(t *testing.T) {
 }
 
 func TestExportSyslog(t *testing.T) {
+
+	// decrease exponential back-off base retry delay.
+	baseRetryDelay = 1 * time.Microsecond
 
 	// re-initialize
 	syslogWriterOnce = sync.Once{}
