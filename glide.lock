@@ -1,5 +1,5 @@
 hash: 1f1de020b82843bb51fbb1c39ba3bee1588fa25201fcb35f25f3084e0fe5187a
-updated: 2017-08-22T14:57:31.136103564-05:00
+updated: 2017-08-29T15:31:43.433107767-05:00
 imports:
 - name: github.com/calmh/ipfix
   version: 7181e6d19dda2c666383425d35a014a9f9fc7709
