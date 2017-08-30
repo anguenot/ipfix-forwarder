@@ -51,7 +51,7 @@ func parseIpfixMessage(buf []byte, n int,
 
 	msg, err := ipfixContext.session.ParseBuffer(buf[0:n])
 	if err != nil {
-		glog.Errorln("Error recieved:", err)
+		glog.Errorln("Error received:", err)
 	}
 
 	if len(msg.DataRecords) > 0 {
