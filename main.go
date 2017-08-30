@@ -5,7 +5,10 @@ import "fmt"
 func main() {
 
 	parseOptions()
-	server()
+
+	server := NewServer()
+	server.Start()
+	<-server.exit
 }
 
 // display version info
