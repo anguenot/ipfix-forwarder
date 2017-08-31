@@ -24,6 +24,7 @@ func NewServer() *Server {
 		outgoing: make(chan string),
 		exit:     make(chan interface{}),
 	}
+	parseOptions() // parse program options
 	server.Listen()
 	for server.conn == nil {
 	} // wait for connection

@@ -4,8 +4,6 @@ import "fmt"
 
 func main() {
 
-	parseOptions()
-
 	server := NewServer()
 	server.Start()
 	<-server.exit
