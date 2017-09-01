@@ -4,6 +4,7 @@ import (
 	"net"
 	"strconv"
 	"github.com/golang/glog"
+	"sync"
 )
 
 // Server holds one (1) UDP connection. Messages are read from the 'incoming'
@@ -11,6 +12,7 @@ import (
 // 'outgoing' channel for exports
 type Server struct {
 	conn     *net.UDPConn
+	connMu   *sync.RWMutex
 	incoming chan *Message
 	outgoing chan string
 	exit     chan interface{}
@@ -20,15 +22,30 @@ type Server struct {
 func NewServer() *Server {
 	server := &Server{
 		conn:     nil,
+		connMu:   new(sync.RWMutex),
 		incoming: make(chan *Message),
 		outgoing: make(chan string),
 		exit:     make(chan interface{}),
 	}
 	parseOptions() // parse program options
 	server.Listen()
-	for server.conn == nil {
+	for server.getConn() == nil {
 	} // wait for connection
 	return server
+}
+
+// returns a concurrent-safe UDP connection.
+func (server *Server) getConn() *net.UDPConn {
+	server.connMu.RLock()
+	defer server.connMu.RUnlock()
+	return server.conn
+}
+
+// sets the server UDP connection.
+func (server *Server) setConn(conn *net.UDPConn) {
+	server.connMu.Lock()
+	defer server.connMu.Unlock()
+	server.conn = conn
 }
 
 // Listen does wait for incoming UDP messages
@@ -43,12 +60,12 @@ func (server *Server) Listen() {
 		glog.Infoln("It can take up to 1 minute for messages to start " +
 			"coming in: waiting for IPFIX template sync.")
 
-		var err error
-		server.conn, err = net.ListenUDP("udp", udpAddr)
+		conn, err := net.ListenUDP("udp", udpAddr)
 		if err != nil {
 			panic(err)
 		}
-		defer server.conn.Close()
+		defer conn.Close()
+		server.setConn(conn)
 
 		for {
 			select {
@@ -72,7 +89,7 @@ func (server *Server) Read(ipfixContext *IpfixContext, exit chan interface{}) {
 	for err == nil && errCount < maxRetries {
 
 		buf := make([]byte, 65507) // maximum UDP payload length
-		n, addr, err := server.conn.ReadFrom(buf)
+		n, addr, err := server.getConn().ReadFrom(buf)
 		if err != nil {
 			incErrorCountAndSleep(err, &errCount)
 			// error will be logged when exiting after 3 errors.
