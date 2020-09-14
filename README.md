@@ -84,7 +84,7 @@ usage: ipfix-forwarder [server-flags] [vendor(s)] [syslog-export-info] [logging-
   -v value
         log level for V logs
   -vendor-nokia
-    	Include Nokia NAT vendor fields.
+        Include Nokia NAT vendor fields.
   -vendor-vmware-nsx
         Include VMware NSX vendor fields.
   -vendor-vmware-vds
