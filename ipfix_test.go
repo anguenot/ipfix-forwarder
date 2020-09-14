@@ -1,8 +1,8 @@
 package main
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestMapToJson(t *testing.T) {
@@ -76,7 +76,10 @@ func TestInitIpfixVendors(t *testing.T) {
 	globalServerOptions.vendors = []string{VendorVmwareVDS}
 	initIpfixVendors(c.interpreter)
 
-	globalServerOptions.vendors = []string{VendorVmwareVDS, VendorVmwareNSX}
+	globalServerOptions.vendors = []string{VendorNokia}
+	initIpfixVendors(c.interpreter)
+
+	globalServerOptions.vendors = []string{VendorVmwareVDS, VendorVmwareNSX, VendorNokia}
 	initIpfixVendors(c.interpreter)
 
 }

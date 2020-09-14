@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
 	"os"
 	"strings"
 
@@ -39,6 +39,8 @@ func parseOptions() {
 		"Include VMware NSX vendor fields.")
 	vendorVmwareVds := flag.Bool(VendorVmwareVDS, false,
 		"Include VMware vSphere Distributed Switch (VDS) vendor fields.")
+	vendorNokia := flag.Bool(VendorNokia, false,
+		"Include Nokia NAT vendor fields.")
 
 	exportJSONSyslog := flag.Bool("export-json-to-syslog", false,
 		"export flows to syslog server in JSON format")
@@ -76,6 +78,11 @@ func parseOptions() {
 		glog.Infoln("VMWare vendor fields for vCenter DVS will be " +
 			"interpreted.")
 		vendors = append(vendors, VendorVmwareVDS)
+	}
+	if *vendorNokia {
+		glog.Infoln("Nokia vendor fields for NAT will be " +
+			"interpreted.")
+		vendors = append(vendors, VendorNokia)
 	}
 
 	// syslog server information for JSON exports.
