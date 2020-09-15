@@ -1,12 +1,8 @@
 language: go
-dist: trusty
-go:
-  - 1.9.x
-  - master
 
-install:
-  - go get -v github.com/Masterminds/glide 
-  - make get-deps
+go:
+  - 1.12.x
+  - master
 
 script:
   - make test
