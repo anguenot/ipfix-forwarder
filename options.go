@@ -31,6 +31,10 @@ func parseOptions() {
 		"IP the server will be listening to.")
 	serverPort := flag.Int("server-port", 2055,
 		"Port we will be listening on.")
+	serverRcvBuf := flag.Int("server-rcvbuf", 2097152,
+		"Size of OS receive buffer associated with the connection.")
+	serverSndBuf := flag.Int("server-sndbuf", 2097152,
+		"Size of OS transmit buffer associated with the connection.")
 
 	numCPU := flag.Int("num-cpu", runtime.NumCPU(),
 		"Number of CPUs to leverage.")
@@ -105,6 +109,8 @@ func parseOptions() {
 	globalServerOptions = ServerOptions{
 		address:          *serverAddr,
 		port:             *serverPort,
+		rcvbuf:           *serverRcvBuf,
+		sndbuf:           *serverSndBuf,
 		numCPU:           *numCPU,
 		exportSyslogInfo: exportSyslogInfo,
 		vendors:          vendors,

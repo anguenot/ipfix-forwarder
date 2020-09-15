@@ -6,6 +6,8 @@ import "github.com/calmh/ipfix"
 type ServerOptions struct {
 	address          string
 	port             int
+	rcvbuf           int
+	sndbuf           int
 	numCPU           int
 	vendors          []string
 	exportSyslogInfo ExportSyslogInfo
