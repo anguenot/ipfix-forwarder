@@ -6,4 +6,4 @@
 
 ## Contributors
 
-None yet. Why not be the first?
+- Milan Nikolic [gen2brain](https://github.com/gen2brain)
