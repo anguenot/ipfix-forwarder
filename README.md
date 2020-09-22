@@ -5,7 +5,7 @@
 
 
 `ipfix-forwarder` listens for IPFIX (RFC 5101) streams sent over UDP, parses, 
-pre-processes, includes extra (VMware) vendor fields, converts to JSON and 
+pre-processes, includes extra (VMware, Nokia) vendor fields, converts to JSON and 
 optionally can forward JSON string representation to a custom syslog destination.
 
 In addition to IPFX standard fields, it also knows how to interpret and include 
@@ -13,6 +13,7 @@ the following vendor IPFIX fields:
 
 1. VMware NSX
 2. VMware vSphere Distributed Switch (VDS)
+3. Nokia NAT
 
 If using these vendors above the JSON will include an extra field named 
 `nsxSegmentId` which will correspond to the edge `segmentId`. It then becomes 
@@ -82,6 +83,8 @@ usage: ipfix-forwarder [server-flags] [vendor(s)] [syslog-export-info] [logging-
         logs at or above this threshold go to stderr
   -v value
         log level for V logs
+  -vendor-nokia
+        Include Nokia NAT vendor fields.
   -vendor-vmware-nsx
         Include VMware NSX vendor fields.
   -vendor-vmware-vds

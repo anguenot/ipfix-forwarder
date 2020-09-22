@@ -1,15 +1,15 @@
 package main
 
 import (
-	"strconv"
 	"encoding/json"
+	"strconv"
 
-	"github.com/golang/glog"
 	"github.com/calmh/ipfix"
+	"github.com/golang/glog"
 )
 
 // initialize an IPFIX context and interpreter instances
-func initIpfixContext() (*IpfixContext) {
+func initIpfixContext() *IpfixContext {
 
 	ipfixSession := ipfix.NewSession()
 	ipfixInterpreter := ipfix.NewInterpreter(ipfixSession)
@@ -36,6 +36,10 @@ func initIpfixVendors(ipfixInterpreter *ipfix.Interpreter) {
 			glog.V(4).Infoln("Include vendor fields",
 				VendorVmwareVDS)
 			includeVmwareVDSFields(ipfixInterpreter)
+		case VendorNokia:
+			glog.V(4).Infoln("Include vendor fields",
+				VendorNokia)
+			includeNokiaFields(ipfixInterpreter)
 		}
 	}
 }
@@ -47,7 +51,7 @@ func mapToJSON(myMap map[string]interface{}) string {
 }
 
 func parseIpfixMessage(buf []byte, n int,
-	ipfixContext *IpfixContext) (map[string]interface{}) {
+	ipfixContext *IpfixContext) map[string]interface{} {
 
 	msg, err := ipfixContext.session.ParseBuffer(buf[0:n])
 	if err != nil {
@@ -92,7 +96,7 @@ func parseIpfixMessage(buf []byte, n int,
 }
 
 // parse IPFIX messages and returns a JSON string representation
-func parseIpfix(buf []byte, n int, ipfixContext *IpfixContext) (string) {
+func parseIpfix(buf []byte, n int, ipfixContext *IpfixContext) string {
 	msgMap := parseIpfixMessage(buf, n, ipfixContext)
 	var jsonStr string
 	if len(msgMap) > 0 {
