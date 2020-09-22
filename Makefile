@@ -14,8 +14,6 @@ help:
 	@echo
 	@echo 'Usage:'
 	@echo '    make build           Compile the project.'
-	@echo '    make get-deps        runs glide install, mostly used for ci.'
-	
 	@echo '    make clean           Clean the directory tree.'
 	@echo
 
@@ -24,15 +22,17 @@ build:
 	@echo "GOPATH=${GOPATH}"
 	go build -ldflags "-X main.GitCommit=${GIT_COMMIT}${GIT_DIRTY} -X main.VersionPrerelease=DEV" -o bin/${BIN_NAME}
 
-get-deps:
+release:
+	@echo "releasing ${BIN_NAME} ${VERSION}"
 	@echo "GOPATH=${GOPATH}"
-	glide install
+	go build -ldflags "-X main.GitCommit=${GIT_COMMIT}${GIT_DIRTY} -s -w" -o bin/${BIN_NAME}
+	cd bin && tar -cvzf ${BIN_NAME}.tgz ${BIN_NAME}
 
 clean:
 	@test ! -e bin/${BIN_NAME} || rm bin/${BIN_NAME}
 
 test:
-	go test -v $(glide nv)
+	go test -v
 
 coverage:
 	go test -covermode=count -coverprofile=coverage.out
