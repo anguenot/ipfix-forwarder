@@ -106,7 +106,7 @@ You can find latest binary releases for `linux/amd64` [here](https://github.com/
 
 ## Build it
 
-You will need Go 1.8.x installed.
+You will need Go 1.13.x installed.
 
 ```console
 
