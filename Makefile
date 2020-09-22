@@ -43,6 +43,6 @@ coverage-html:
 	go tool cover -html=coverage.out
 
 lint:
-	go get -u github.com/golang/lint/golint
+	go get -u golang.org/x/lint/golint
 	golint .
 
