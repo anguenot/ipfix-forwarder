@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/golang/glog"
 	"net"
 	"strconv"
-	"github.com/golang/glog"
 	"sync"
 )
 
@@ -65,6 +65,16 @@ func (server *Server) Listen() {
 			panic(err)
 		}
 		defer conn.Close()
+
+		err = conn.SetReadBuffer(globalServerOptions.rcvbuf)
+		if err != nil {
+			glog.Errorln(err)
+		}
+		err = conn.SetWriteBuffer(globalServerOptions.sndbuf)
+		if err != nil {
+			glog.Errorln(err)
+		}
+
 		server.setConn(conn)
 
 		for {

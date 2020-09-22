@@ -79,6 +79,10 @@ usage: ipfix-forwarder [server-flags] [vendor(s)] [syslog-export-info] [logging-
         IP the server will be listening to. (default "0.0.0.0")
   -server-port int
         Port we will be listening on. (default 2055)
+  -server-rcvbuf int
+        Size of OS receive buffer associated with the connection. (default 2097152)
+  -server-sndbuf int
+        Size of OS transmit buffer associated with the connection. (default 2097152)
   -stderrthreshold value
         logs at or above this threshold go to stderr
   -v value
